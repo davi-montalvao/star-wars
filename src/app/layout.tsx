@@ -23,7 +23,10 @@ export default function RootLayout({
             backgroundImage: `url('/assets/background.jpg')`, 
           }}
         />
-        <div className="relative z-10">{children}</div>
+        <div className="relative z-10 mb-20" >{children}</div>
+        <div className="fixed bottom-0 left-0 right-0 text-center py-5 bg-black z-50 text-white">
+          Copyright © 2025 | Made with love and persistence 🤍💪🏽
+        </div>
       </body>
     </html>
   )

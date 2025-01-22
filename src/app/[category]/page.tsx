@@ -14,8 +14,8 @@ export default async function CategoryPage({
   params: { category: string }
   searchParams: { page?: string }
 }) {
-  const { category } = params 
-  const page = searchParams?.page || "1"
+  const { category } = await params 
+  const { page= "1" } = await searchParams
 
   if (!validCategories.includes(category)) {
     notFound()
@@ -29,6 +29,7 @@ export default async function CategoryPage({
       <Suspense fallback={<Loading />}>
         <CategoryList category={category} page={Number.parseInt(page)} />
       </Suspense>
+    
     </div>
   )
 }
