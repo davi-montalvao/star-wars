@@ -1,22 +1,20 @@
 import { Suspense } from "react"
-import { notFound } from "next/navigation"
+
 import CategoryList from "./CategoryList"
 import Loading from "../loading"
 import BackButton from "../../components/BackButton"
 import ScrollToTop from "../../components/ScrollToTop"
 
-interface CategoryPageProps {
-  params: { category: string }
-  searchParams: { page?: string }
-}
 
-export default async function CategoryPage({
-  params,
-  searchParams,
-}: CategoryPageProps) {
-  const { category } = await params
+interface PageProps {
+  params: any;
+  searchParams: any;
+}
+export default async function CategoryPage({ params, searchParams }:PageProps) {
+  const { category } = await params 
 
   const { page= "1" } = await searchParams
+
 
 
   return (
