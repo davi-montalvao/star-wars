@@ -7,14 +7,10 @@ import ScrollToTop from "../../components/ScrollToTop"
 
 const validCategories = ["people", "planets", "films", "species", "vehicles", "starships"]
 
-export default async function CategoryPage({
-  params,
-  searchParams,
-}: {
-  params: { category: string }
-  searchParams: { page?: string }
-}) {
+export default async function CategoryPage({ params, searchParams })  {
+ 
   const { category } = await params 
+
   const { page= "1" } = await searchParams
 
   if (!validCategories.includes(category)) {
