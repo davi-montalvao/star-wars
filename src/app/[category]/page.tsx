@@ -5,17 +5,19 @@ import Loading from "../loading"
 import BackButton from "../../components/BackButton"
 import ScrollToTop from "../../components/ScrollToTop"
 
-const validCategories = ["people", "planets", "films", "species", "vehicles", "starships"]
+interface CategoryPageProps {
+  params: { category: string }
+  searchParams: { page?: string }
+}
 
-export default async function CategoryPage({ params, searchParams })  {
- 
-  const { category } = await params 
+export default async function CategoryPage({
+  params,
+  searchParams,
+}: CategoryPageProps) {
+  const { category } = await params
 
   const { page= "1" } = await searchParams
 
-  if (!validCategories.includes(category)) {
-    notFound()
-  }
 
   return (
     <div className="min-h-screen p-8">
