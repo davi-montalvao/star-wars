@@ -31,7 +31,7 @@ export default function ScrollToTop() {
     <Button
       variant="outline"
       onClick={scrollToTop}
-      className={`fixed bottom-4 right-4 z-50 border-yellow-400 text-yellow-400 hover:bg-yellow-400/20 transition-opacity duration-300 ${
+      className={`fixed bottom-40 right-4 z-50 border-yellow-400 text-yellow-400 hover:bg-yellow-400/20 transition-opacity duration-300 ${
         isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
