@@ -5,44 +5,44 @@ import { Users, Globe, Film, SpaceIcon as Alien, Car, Rocket } from "lucide-reac
 import { useEffect, useState } from "react"
 
 const categories = [
-  { 
-    name: "People", 
-    icon: Users, 
+  {
+    name: "People",
+    icon: Users,
     path: "people",
     description: "Discover characters from across the galaxy",
     color: "from-blue-500 to-cyan-500"
   },
-  { 
-    name: "Planets", 
-    icon: Globe, 
+  {
+    name: "Planets",
+    icon: Globe,
     path: "planets",
     description: "Explore worlds beyond imagination",
     color: "from-green-500 to-emerald-500"
   },
-  { 
-    name: "Films", 
-    icon: Film, 
+  {
+    name: "Films",
+    icon: Film,
     path: "films",
     description: "Journey through epic cinematic adventures",
     color: "from-purple-500 to-pink-500"
   },
-  { 
-    name: "Species", 
-    icon: Alien, 
+  {
+    name: "Species",
+    icon: Alien,
     path: "species",
     description: "Meet diverse alien lifeforms",
     color: "from-orange-500 to-red-500"
   },
-  { 
-    name: "Vehicles", 
-    icon: Car, 
+  {
+    name: "Vehicles",
+    icon: Car,
     path: "vehicles",
     description: "Ride legendary ground vehicles",
     color: "from-yellow-500 to-amber-500"
   },
-  { 
-    name: "Starships", 
-    icon: Rocket, 
+  {
+    name: "Starships",
+    icon: Rocket,
     path: "starships",
     description: "Pilot iconic spacecraft",
     color: "from-indigo-500 to-blue-500"
@@ -76,9 +76,9 @@ export default function Home() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {categories.map((category, index) => (
-            <Link 
-              key={category.path} 
-              href={`/${category.path}`} 
+            <Link
+              key={category.path}
+              href={`/${category.path}`}
               className="group block slide-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -121,7 +121,7 @@ export default function Home() {
             Ready to Explore?
           </h3>
           <p className="text-white/70 mb-6">
-            Choose a category above to begin your journey through the Star Wars universe. 
+            Choose a category above to begin your journey through the Star Wars universe.
             Each section contains detailed information about characters, locations, and objects from the saga.
           </p>
           <div className="flex justify-center space-x-4">
@@ -134,4 +134,3 @@ export default function Home() {
     </main>
   )
 }
-

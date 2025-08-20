@@ -39,7 +39,7 @@ Uma aplicação web moderna e interativa para explorar o vasto universo de Star 
 ## 🚀 Como Executar
 
 ### Pré-requisitos
-- Node.js 18+ 
+- Node.js 18+
 - npm, yarn ou pnpm
 
 ### Instalação

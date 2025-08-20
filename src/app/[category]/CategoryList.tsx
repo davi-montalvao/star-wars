@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Pagination from "@/components/Pagination"
 import LoadingSpinner from "@/components/LoadingSpinner"
+import { fetchCategoryData } from "@/lib/api"
 
 interface Item {
   name?: string
@@ -21,19 +22,22 @@ export default function CategoryList({
   const [items, setItems] = useState<Item[]>([])
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   useEffect(() => {
     setIsLoading(true)
-    fetch(`https://swapi.dev/api/${category}/?page=${page}`)
-      .then((res) => res.json())
+    setError(null)
+    
+    fetchCategoryData(category, page)
       .then((data) => {
-        setItems(data.results)
-        setTotalPages(Math.ceil(data.count / 10))
+        setItems(data.results || [])
+        setTotalPages(Math.ceil((data.count || 0) / 10))
         setIsLoading(false)
       })
       .catch((error) => {
         console.error("Error fetching data:", error)
+        setError("Falha ao carregar dados. Tente novamente em alguns instantes.")
         setIsLoading(false)
       })
   }, [category, page])
@@ -44,6 +48,42 @@ export default function CategoryList({
 
   if (isLoading) {
     return <LoadingSpinner />
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-4xl mx-auto text-center">
+        <div className="glass-card p-8">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h3 className="text-2xl font-bold text-red-400 mb-4">
+            Erro ao Carregar Dados
+          </h3>
+          <p className="text-white/70 mb-6">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="glass-card px-6 py-3 text-white hover:text-yellow-400 transition-all duration-300 hover:scale-105"
+          >
+            Tentar Novamente
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!items || items.length === 0) {
+    return (
+      <div className="max-w-4xl mx-auto text-center">
+        <div className="glass-card p-8">
+          <div className="text-6xl mb-4">🌌</div>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Nenhum Item Encontrado
+          </h3>
+          <p className="text-white/70">
+            Não foi possível encontrar itens para esta categoria no momento.
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -60,8 +100,8 @@ export default function CategoryList({
       {/* Items Grid */}
       <div className="grid gap-6 md:gap-8">
         {items.map((item, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="glass-card p-6 md:p-8 slide-in"
             style={{ animationDelay: `${index * 0.05}s` }}
           >
@@ -120,4 +160,3 @@ export default function CategoryList({
     </div>
   )
 }
-

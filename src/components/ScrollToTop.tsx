@@ -35,11 +35,10 @@ export default function ScrollToTop() {
     >
       <div className="relative">
         <ChevronUp className="h-5 w-5 group-hover:-translate-y-1 transition-transform duration-300" />
-        
+
         {/* Glow effect */}
         <div className="absolute inset-0 bg-yellow-400/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
     </button>
   )
 }
-

@@ -6,16 +6,16 @@ export default function LoadingSpinner() {
         <div className="w-32 h-32 md:w-40 md:h-40 relative">
           {/* Outer ring */}
           <div className="absolute inset-0 rounded-full border-4 border-yellow-400/30 animate-spin" style={{ animationDuration: '3s' }} />
-          
+
           {/* Inner ring */}
           <div className="absolute inset-2 rounded-full border-4 border-yellow-400/50 animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }} />
-          
+
           {/* Center */}
           <div className="absolute inset-4 rounded-full bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center">
             <div className="text-2xl md:text-4xl font-bold text-white">★</div>
           </div>
         </div>
-        
+
         {/* Glow effect */}
         <div className="absolute inset-0 rounded-full bg-yellow-400/20 blur-xl animate-pulse" />
       </div>

@@ -25,7 +25,7 @@ export default function RootLayout({
         <div
           className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-10"
           style={{
-            backgroundImage: `url('/assets/background.jpg')`, 
+            backgroundImage: `url('/assets/background.jpg')`,
           }}
         />
         <div className="relative z-10 min-h-screen">{children}</div>

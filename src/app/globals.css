@@ -17,9 +17,9 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(135deg, 
-    rgb(15, 23, 42) 0%, 
-    rgb(30, 41, 59) 50%, 
+  background: linear-gradient(135deg,
+    rgb(15, 23, 42) 0%,
+    rgb(30, 41, 59) 50%,
     rgb(51, 65, 85) 100%);
   min-height: 100vh;
   overflow-x: hidden;
@@ -109,9 +109,9 @@ body {
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, 
-    rgba(251, 191, 36, 0.1) 0%, 
-    rgba(245, 158, 11, 0.1) 50%, 
+  background: linear-gradient(135deg,
+    rgba(251, 191, 36, 0.1) 0%,
+    rgba(245, 158, 11, 0.1) 50%,
     rgba(217, 119, 6, 0.1) 100%);
 }
 
@@ -139,7 +139,7 @@ body {
   .glass-card {
     border-radius: 16px;
   }
-  
+
   .floating {
     animation: float 2s ease-in-out infinite;
   }
@@ -167,4 +167,3 @@ body {
   0%, 100% { opacity: 0.3; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.2); }
 }
-

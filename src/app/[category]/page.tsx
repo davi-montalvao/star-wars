@@ -11,14 +11,14 @@ interface PageProps {
 }
 
 export default async function CategoryPage({ params, searchParams }: PageProps) {
-  const { category } = await params 
+  const { category } = await params
   const { page = "1" } = await searchParams
 
   return (
     <div className="min-h-screen p-4 md:p-8 relative z-10">
       <BackButton />
       <ScrollToTop />
-      
+
       {/* Header Section */}
       <div className="text-center mb-12 md:mb-16">
         <div className="slide-in">
