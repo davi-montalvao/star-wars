@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
 import { ChevronUp } from "lucide-react"
 
 export default function ScrollToTop() {
@@ -28,15 +27,19 @@ export default function ScrollToTop() {
   }
 
   return (
-    <Button
-      variant="outline"
+    <button
       onClick={scrollToTop}
-      className={`fixed bottom-40 right-4 z-50 border-yellow-400 text-yellow-400 hover:bg-yellow-400/20 transition-opacity duration-300 ${
-        isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+      className={`fixed bottom-20 right-4 z-50 glass-card p-3 text-white hover:text-yellow-400 transition-all duration-500 hover:scale-110 group ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
       }`}
     >
-      <ChevronUp className="h-4 w-4" />
-    </Button>
+      <div className="relative">
+        <ChevronUp className="h-5 w-5 group-hover:-translate-y-1 transition-transform duration-300" />
+        
+        {/* Glow effect */}
+        <div className="absolute inset-0 bg-yellow-400/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      </div>
+    </button>
   )
 }
 

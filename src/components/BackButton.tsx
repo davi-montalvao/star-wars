@@ -1,27 +1,26 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
 import { ChevronLeft } from "lucide-react"
 
 export default function BackButton() {
   const router = useRouter()
 
   return (
-    <Button
-      variant="outline"
+    <button
       onClick={() => router.back()}
-      className="fixed top-4 left-4 z-50 border-yellow-400 text-yellow-400 hover:bg-yellow-400/20 md:top-8 md:left-8
+      className="fixed top-4 left-4 z-50 glass-card p-3 md:p-4 text-white hover:text-yellow-400 transition-all duration-300 hover:scale-110 group
         /* Mobile optimization */
         text-sm md:text-base
-        p-2 md:p-4
-        min-w-[40px] md:min-w-[auto]
+        min-w-[48px] md:min-w-[auto]
         aspect-square md:aspect-auto
       "
     >
-      <ChevronLeft className="h-4 w-4 md:mr-2" />
-      <span className="hidden md:inline">Back</span>
-    </Button>
+      <div className="flex items-center justify-center md:justify-start">
+        <ChevronLeft className="h-5 w-5 md:mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
+        <span className="hidden md:inline font-medium">Back</span>
+      </div>
+    </button>
   )
 }
 
