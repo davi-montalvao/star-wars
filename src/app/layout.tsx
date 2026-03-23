@@ -1,16 +1,20 @@
 import "./globals.css"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import StarryBackground from "@/components/StarryBackground"
 
 const inter = Inter({ subsets: ["latin"] })
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+}
 
 export const metadata: Metadata = {
   title: "Star Wars Universe Explorer",
   description: "Explore the vast Star Wars universe with our interactive database. Discover characters, planets, films, species, vehicles, and starships from a galaxy far, far away.",
   keywords: "Star Wars, characters, planets, films, species, vehicles, starships, database, explorer",
   authors: [{ name: "Star Wars Fan" }],
-  viewport: "width=device-width, initial-scale=1",
 }
 
 export default function RootLayout({

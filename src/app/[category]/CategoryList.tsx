@@ -40,6 +40,8 @@ interface Item {
   [key: string]: any
 }
 
+const CATEGORIES_WITH_IMAGES = ["people", "planets", "films", "species", "vehicles", "starships"]
+
 export default function CategoryList({
   category,
   page,
@@ -53,8 +55,6 @@ export default function CategoryList({
   const [error, setError] = useState<string | null>(null)
   const [itemImages, setItemImages] = useState<Record<number, string>>({})
   const router = useRouter()
-
-  const categoriesWithImages: string[] = ["people", "planets", "films", "species", "vehicles", "starships"]
 
   useEffect(() => {
     setIsLoading(true)
@@ -76,7 +76,7 @@ export default function CategoryList({
 
   // Busca imagens para todas as categorias
   useEffect(() => {
-    if (!categoriesWithImages.includes(category) || items.length === 0) return
+    if (!CATEGORIES_WITH_IMAGES.includes(category) || items.length === 0) return
 
     const loadImages = async () => {
       const images: Record<number, string> = {}
@@ -171,7 +171,7 @@ export default function CategoryList({
           >
             <div
               className={
-                categoriesWithImages.includes(category) && itemImages[index]
+                CATEGORIES_WITH_IMAGES.includes(category) && itemImages[index]
                   ? "grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 lg:gap-8 items-start"
                   : ""
               }
@@ -220,7 +220,7 @@ export default function CategoryList({
               </div>
 
               {/* Imagem (direita) - para todas as categorias com suporte */}
-              {categoriesWithImages.includes(category) && itemImages[index] && (
+              {CATEGORIES_WITH_IMAGES.includes(category) && itemImages[index] && (
                 <ItemImageWithFallback
                   src={itemImages[index]}
                   alt={item.name || item.title || "Item"}
