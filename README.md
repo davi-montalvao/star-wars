@@ -18,6 +18,7 @@ Uma aplicação web moderna e interativa para explorar o vasto universo de Star 
 ### 🚀 Funcionalidades
 - **Exploração de Categorias**: People, Planets, Films, Species, Vehicles, Starships
 - **API SWAPI**: Integração com a API oficial do Star Wars
+- **Sistema de Fallback**: Múltiplas URLs de API para máxima confiabilidade
 - **Paginação**: Navegação intuitiva entre páginas de resultados
 - **Busca em Tempo Real**: Carregamento dinâmico de dados
 - **Navegação Suave**: Transições e animações fluidas
@@ -33,7 +34,7 @@ Uma aplicação web moderna e interativa para explorar o vasto universo de Star 
 - **Frontend**: Next.js 14, React 18, TypeScript
 - **Styling**: Tailwind CSS, CSS Custom Properties
 - **Icons**: Lucide React
-- **API**: SWAPI (Star Wars API)
+- **API**: SWAPI (Star Wars API) com sistema de fallback
 - **Deployment**: Vercel (recomendado)
 
 ## 🚀 Como Executar
@@ -90,8 +91,10 @@ star-wars/
 │   │   ├── LoadingSpinner.tsx # Spinner de carregamento
 │   │   ├── Pagination.tsx    # Componente de paginação
 │   │   ├── ScrollToTop.tsx   # Botão de voltar ao topo
-│   │   └── StarryBackground.tsx # Fundo estrelado animado
+│   │   ├── StarryBackground.tsx # Fundo estrelado animado
+│   │   └── CategorySection.tsx # Seções de categoria
 │   └── lib/                  # Utilitários e configurações
+│       └── api.ts            # Configuração da API com fallbacks
 ├── public/                   # Assets estáticos
 │   └── assets/              # Imagens e recursos
 ├── tailwind.config.ts        # Configuração do Tailwind CSS
@@ -113,7 +116,13 @@ star-wars/
 - **Paginação Avançada**: Navegação com números de página
 - **Loading States**: Spinners animados durante carregamento
 
-### 🎨 Sistema de Design
+### 🔌 Sistema de API Robusto
+- **Múltiplos Endpoints**: Fallbacks automáticos para diferentes URLs
+- **Tratamento de Erro**: Mensagens amigáveis e opções de retry
+- **Timeout Configurável**: Prevenção de travamentos
+- **Retry Automático**: Tentativas múltiplas em caso de falha
+
+## 🎨 Sistema de Design
 
 #### Cores
 - **Primária**: Amarelo (#fbbf24) - Representa a Força
@@ -176,6 +185,20 @@ const nextConfig = {
 }
 ```
 
+### API Configuration
+```typescript
+// src/lib/api.ts
+export const SWAPI_CONFIG = {
+  BASE_URLS: [
+    'http://swapi.dev/api',
+    'https://swapi.dev/api',
+    'https://swapi.py4e.com/api', // Mirror alternativo
+  ],
+  TIMEOUT: 10000,
+  MAX_RETRIES: 3,
+}
+```
+
 ## 🚀 Deploy
 
 ### Vercel (Recomendado)
@@ -187,6 +210,30 @@ const nextConfig = {
 - **Netlify**: Compatível com Next.js
 - **Railway**: Deploy simples e rápido
 - **AWS Amplify**: Para projetos empresariais
+
+## 🐛 Troubleshooting
+
+### Problemas Comuns
+
+#### Erro de Certificado SSL
+Se você encontrar erros de certificado SSL com a API SWAPI:
+- A aplicação automaticamente tenta múltiplas URLs
+- Inclui fallbacks para HTTP e HTTPS
+- Usa mirrors alternativos da API
+
+#### Falha na API
+Se a API principal falhar:
+- Sistema de retry automático
+- Fallbacks para URLs alternativas
+- Mensagens de erro amigáveis
+- Opção de tentar novamente
+
+#### Performance Mobile
+Para melhor performance em dispositivos móveis:
+- Animações otimizadas
+- Lazy loading de componentes
+- Debounce em interações
+- Cache de dados local
 
 ## 🤝 Contribuindo
 
