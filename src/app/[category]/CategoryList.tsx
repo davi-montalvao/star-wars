@@ -2,9 +2,37 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import Pagination from "@/components/Pagination"
 import LoadingSpinner from "@/components/LoadingSpinner"
-import { fetchCategoryData } from "@/lib/api"
+import { fetchCategoryData, extractPeopleIdFromUrl, getCharacterImageUrl } from "@/lib/api"
+import { getFandomPageTitle, fetchFandomImageUrl } from "@/lib/swapi-images"
+
+function ItemImageWithFallback({
+  src,
+  alt,
+  onError,
+}: {
+  src: string
+  alt: string
+  onError: () => void
+}) {
+  return (
+    <div className="flex justify-center lg:justify-end lg:ml-4 order-first lg:order-last">
+      <div className="relative w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-lg overflow-hidden ring-2 ring-yellow-400/30 shadow-lg">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 192px, 224px"
+          unoptimized
+          onError={onError}
+        />
+      </div>
+    </div>
+  )
+}
 
 interface Item {
   name?: string
@@ -23,11 +51,15 @@ export default function CategoryList({
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [itemImages, setItemImages] = useState<Record<number, string>>({})
   const router = useRouter()
+
+  const categoriesWithImages: string[] = ["people", "planets", "films", "species", "vehicles", "starships"]
 
   useEffect(() => {
     setIsLoading(true)
     setError(null)
+    setItemImages({})
     
     fetchCategoryData(category, page)
       .then((data) => {
@@ -41,6 +73,38 @@ export default function CategoryList({
         setIsLoading(false)
       })
   }, [category, page])
+
+  // Busca imagens para todas as categorias
+  useEffect(() => {
+    if (!categoriesWithImages.includes(category) || items.length === 0) return
+
+    const loadImages = async () => {
+      const images: Record<number, string> = {}
+
+      if (category === "people") {
+        await Promise.all(
+          items.map(async (item, index) => {
+            const id = extractPeopleIdFromUrl(item.url)
+            if (id) {
+              const imgUrl = await getCharacterImageUrl(id)
+              if (imgUrl) images[index] = imgUrl
+            }
+          })
+        )
+      } else {
+        await Promise.all(
+          items.map(async (item, index) => {
+            const name = item.name || item.title
+            const title = getFandomPageTitle(name, category)
+            const imgUrl = await fetchFandomImageUrl(title)
+            if (imgUrl) images[index] = imgUrl
+          })
+        )
+      }
+      setItemImages(images)
+    }
+    loadImages()
+  }, [category, items])
 
   const handlePageChange = (newPage: number) => {
     router.push(`/${category}?page=${newPage}`)
@@ -105,44 +169,70 @@ export default function CategoryList({
             className="glass-card p-6 md:p-8 slide-in"
             style={{ animationDelay: `${index * 0.05}s` }}
           >
-            {/* Item Header */}
-            <div className="mb-6">
-              <h3 className="text-2xl md:text-3xl font-bold text-yellow-400 mb-2">
-                {item.name || item.title}
-              </h3>
-              <div className="w-16 h-1 bg-gradient-to-r from-yellow-400 to-transparent rounded-full" />
-            </div>
+            <div
+              className={
+                categoriesWithImages.includes(category) && itemImages[index]
+                  ? "grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 lg:gap-8 items-start"
+                  : ""
+              }
+            >
+              {/* Conteúdo (esquerda) */}
+              <div>
+                {/* Item Header */}
+                <div className="mb-6">
+                  <h3 className="text-2xl md:text-3xl font-bold text-yellow-400 mb-2">
+                    {item.name || item.title}
+                  </h3>
+                  <div className="w-16 h-1 bg-gradient-to-r from-yellow-400 to-transparent rounded-full" />
+                </div>
 
-            {/* Item Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {Object.entries(item)
-                .filter(([key]) => !["created", "edited", "url"].includes(key))
-                .map(([key, value]) => (
-                  <div key={key} className="group">
-                    <div className="flex flex-col space-y-2">
-                      <span className="text-sm font-semibold text-white/60 uppercase tracking-wide">
-                        {key.replace("_", " ")}
-                      </span>
-                      <span className="text-white/90 text-base group-hover:text-yellow-400 transition-colors duration-300">
-                        {Array.isArray(value) ? (
-                          <span className="inline-flex items-center space-x-2">
-                            <span>{value.length}</span>
-                            <span className="text-yellow-400">•</span>
-                            <span className="text-sm text-white/60">items</span>
+                {/* Item Details */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                  {Object.entries(item)
+                    .filter(([key]) => !["created", "edited", "url"].includes(key))
+                    .map(([key, value]) => (
+                      <div key={key} className="group">
+                        <div className="flex flex-col space-y-2">
+                          <span className="text-sm font-semibold text-white/60 uppercase tracking-wide">
+                            {key.replace("_", " ")}
                           </span>
-                        ) : (
-                          typeof value === 'string' && value.includes('http') ? (
-                            <span className="text-blue-400 hover:text-blue-300 transition-colors cursor-pointer">
-                              View Details
-                            </span>
-                          ) : (
-                            value
-                          )
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                          <span className="text-white/90 text-base group-hover:text-yellow-400 transition-colors duration-300">
+                            {Array.isArray(value) ? (
+                              <span className="inline-flex items-center space-x-2">
+                                <span>{value.length}</span>
+                                <span className="text-yellow-400">•</span>
+                                <span className="text-sm text-white/60">items</span>
+                              </span>
+                            ) : (
+                              typeof value === 'string' && value.includes('http') ? (
+                                <span className="text-blue-400 hover:text-blue-300 transition-colors cursor-pointer">
+                                  View Details
+                                </span>
+                              ) : (
+                                value
+                              )
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              {/* Imagem (direita) - para todas as categorias com suporte */}
+              {categoriesWithImages.includes(category) && itemImages[index] && (
+                <ItemImageWithFallback
+                  src={itemImages[index]}
+                  alt={item.name || item.title || "Item"}
+                  onError={() => {
+                    setItemImages((prev) => {
+                      const next = { ...prev }
+                      delete next[index]
+                      return next
+                    })
+                  }}
+                />
+              )}
             </div>
 
             {/* Hover Effect */}
